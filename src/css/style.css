@@ -261,3 +261,15 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+/* Discount indicator */
+.product-card__discount {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  background-color: var(--tertiary-color);
+  color: white;
+  font-size: var(--small-font);
+  font-weight: bold;
+  border-radius: 4px;
+}
