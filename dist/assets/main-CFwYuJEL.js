@@ -1,4 +1,4 @@
-import{r as i}from"./utils-_eg_pURR.js";import{P as c}from"./ProductData-ckpWzqDt.js";const r={"880RR":"product_pages/?product=880RR","985RF":"product_pages/?product=985RF","985PR":"product_pages/?product=985PR","344YJ":"product_pages/?product=344YJ"};function n(t){const e=t.FinalPrice<t.SuggestedRetailPrice,a=e?Math.round((t.SuggestedRetailPrice-t.FinalPrice)/t.SuggestedRetailPrice*100):0;return`
+import{r as i}from"./utils-_eg_pURR.js";import{P as c}from"./ProductData-uEx2lcmc.js";const r={"880RR":"product_pages/?product=880RR","985RF":"product_pages/?product=985RF","985PR":"product_pages/?product=985PR","344YJ":"product_pages/?product=344YJ"};function n(t){const e=t.FinalPrice<t.SuggestedRetailPrice,a=e?Math.round((t.SuggestedRetailPrice-t.FinalPrice)/t.SuggestedRetailPrice*100):0;return`
     <li class="product-card">
       <a href="${r[t.Id]}">
         <img src="${t.Image}" alt="${t.NameWithoutBrand}">
