@@ -1,4 +1,7 @@
 import { renderListWithTemplate } from "./utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
+
+loadHeaderFooter();
 
 const pagePaths = {
   "880RR": "product_pages/marmot-ajax-3.html?product=880RR",
