@@ -4,18 +4,25 @@ import { loadHeaderFooter } from "./utils.mjs";
 loadHeaderFooter();
 
 const pagePaths = {
-  "880RR": "product_pages/marmot-ajax-3.html?product=880RR",
-  "985RF": "product_pages/northface-talus-4.html?product=985RF",
-  "985PR": "product_pages/northface-alpine-3.html?product=985PR",
-  "344YJ": "product_pages/cedar-ridge-rimrock-2.html?product=344YJ",
+  "880RR": "product_pages/marmot-ajax-3.html",
+  "985RF": "product_pages/northface-talus-4.html",
+  "985PR": "product_pages/northface-alpine-3.html",
+  "344YJ": "product_pages/cedar-ridge-rimrock-2.html",
 };
 
-function productCardTemplate(product) {
+function productCardTemplate(product, category) {
+  const imageUrl = product.Images?.PrimaryMedium || product.Image || "";
+  const brandName = product.Brand?.Name || "";
+  const productPage = pagePaths[product.Id];
+  const href = productPage
+    ? `${productPage}?product=${product.Id}&category=${category}`
+    : "#";
+
   return `
     <li class="product-card">
-      <a href="${pagePaths[product.Id]}">
-        <img src="${product.Image}" alt="${product.NameWithoutBrand}">
-        <h3 class="card__brand">${product.Brand.Name}</h3>
+      <a href="${href}">
+        <img src="${imageUrl}" alt="${product.NameWithoutBrand}">
+        <h3 class="card__brand">${brandName}</h3>
         <h2 class="card__name">${product.NameWithoutBrand}</h2>
         <p class="product-card__price">$${product.FinalPrice}</p>
       </a>
@@ -31,12 +38,24 @@ export default class ProductList {
   }
 
   async init() {
-    const list = await this.dataSource.getData();
+    const list = await this.dataSource.getData(this.category);
     this.renderList(list);
+
+    const title = document.querySelector(".products h2");
+    if (title) {
+      const formattedCategory = this.category
+        ? this.category.charAt(0).toUpperCase() + this.category.slice(1)
+        : "Products";
+      title.textContent = `Top Products: ${formattedCategory}`;
+    }
   }
 
   renderList(list) {
     const visibleProducts = list.filter((product) => pagePaths[product.Id]);
-    renderListWithTemplate(productCardTemplate, this.listElement, visibleProducts);
+    renderListWithTemplate(
+      (product) => productCardTemplate(product, this.category),
+      this.listElement,
+      visibleProducts,
+    );
   }
 }

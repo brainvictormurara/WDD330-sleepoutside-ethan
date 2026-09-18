@@ -151,6 +151,36 @@ button {
   text-align: center;
 }
 
+.category-list {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 860px;
+  margin: 2rem auto 0;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: #2d2d2d;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.category-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
 .products {
   margin-top: 2rem;
   padding: 1rem;
