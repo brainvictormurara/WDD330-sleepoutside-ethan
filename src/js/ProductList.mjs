@@ -1,10 +1,10 @@
 import { renderListWithTemplate } from "./utils.mjs";
 
 const pagePaths = {
-  "880RR": "product_pages/?product=880RR",
-  "985RF": "product_pages/?product=985RF",
-  "985PR": "product_pages/?product=985PR",
-  "344YJ": "product_pages/?product=344YJ",
+  "880RR": "product_pages/marmot-ajax-3.html?product=880RR",
+  "985RF": "product_pages/northface-talus-4.html?product=985RF",
+  "985PR": "product_pages/northface-alpine-3.html?product=985PR",
+  "344YJ": "product_pages/cedar-ridge-rimrock-2.html?product=344YJ",
 };
 
 function productCardTemplate(product) {
