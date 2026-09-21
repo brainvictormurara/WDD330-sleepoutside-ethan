@@ -44,12 +44,27 @@ export async function loadTemplate(path){
   return template;
 }
 
+export function initHeaderSearch() {
+  const form = document.querySelector(".search-form");
+  if (!form) return;
+
+  const input = form.querySelector('input[name="search"]');
+  const currentSearch = new URLSearchParams(window.location.search).get("search");
+  if (input && currentSearch) {
+    input.value = currentSearch;
+  }
+}
+
 export async function loadHeaderFooter(){
   const headerTemplate = await loadTemplate("../partials/header.html");
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const headerElement = document.querySelector("#main-header");
   const footerElement = document.querySelector("#main-footer");
 
-  renderWithTemplate(headerTemplate, headerElement);
-  renderWithTemplate(footerTemplate, footerElement);
+  if (headerElement) {
+    renderWithTemplate(headerTemplate, headerElement, null, initHeaderSearch);
+  }
+  if (footerElement) {
+    renderWithTemplate(footerTemplate, footerElement);
+  }
 }

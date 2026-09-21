@@ -31,29 +31,39 @@ function productCardTemplate(product, category) {
 }
 
 export default class ProductList {
-  constructor(category, dataSource, listElement) {
+  constructor(category, dataSource, listElement, searchQuery = "") {
     this.category = category;
     this.dataSource = dataSource;
     this.listElement = listElement;
+    this.searchQuery = searchQuery;
   }
 
   async init() {
-    const list = await this.dataSource.getData(this.category);
+    const list = this.searchQuery
+      ? await this.dataSource.searchProducts(this.searchQuery)
+      : await this.dataSource.getData(this.category);
     this.renderList(list);
 
     const title = document.querySelector(".products h2");
     if (title) {
-      const formattedCategory = this.category
-        ? this.category.charAt(0).toUpperCase() + this.category.slice(1)
-        : "Products";
-      title.textContent = `Top Products: ${formattedCategory}`;
+      if (this.searchQuery) {
+        title.textContent = `Search Results: ${this.searchQuery}`;
+      } else {
+        const formattedCategory = this.category
+          ? this.category.charAt(0).toUpperCase() + this.category.slice(1)
+          : "Products";
+        title.textContent = `Top Products: ${formattedCategory}`;
+      }
     }
   }
 
   renderList(list) {
-    const visibleProducts = list.filter((product) => pagePaths[product.Id]);
+    const products = Array.isArray(list) ? list : [];
+    const visibleProducts = this.searchQuery
+      ? products
+      : products.filter((product) => pagePaths[product.Id]);
     renderListWithTemplate(
-      (product) => productCardTemplate(product, this.category),
+      (product) => productCardTemplate(product, this.category || "tents"),
       this.listElement,
       visibleProducts,
     );

@@ -14,7 +14,19 @@ export default class ProductData {
   }
 
   async getData(category = this.category) {
+    if (!category) return [];
     const response = await fetch(`${baseURL}products/search/${category}`);
+    const data = await convertToJson(response);
+    return data.Result || data;
+  }
+
+  async searchProducts(searchTerm) {
+    const trimmedTerm = (searchTerm || "").trim();
+    if (!trimmedTerm) return [];
+
+    const response = await fetch(
+      `${baseURL}products/search/${encodeURIComponent(trimmedTerm)}`,
+    );
     const data = await convertToJson(response);
     return data.Result || data;
   }
