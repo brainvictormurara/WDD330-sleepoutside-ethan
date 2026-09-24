@@ -10,10 +10,6 @@ export default class ProductDetails {
   async init() {
     this.product = await this.dataSource.findProductById(this.productId);
     this.renderProductDetails();
-
-    document
-      .getElementById("addToCart")
-      .addEventListener("click", this.addProductToCart.bind(this));
   }
 
   addProductToCart() {
@@ -23,24 +19,36 @@ export default class ProductDetails {
   }
 
   renderProductDetails() {
-    productDetailsTemplate(this.product);
+    const productElement = document.querySelector(".product-detail");
+    if (!productElement) return;
+
+    productElement.innerHTML = productDetailsTemplate(this.product);
+
+    const addToCartButton = document.getElementById("addToCart");
+    if (addToCartButton) {
+      addToCartButton.addEventListener("click", this.addProductToCart.bind(this));
+    }
   }
 }
 
 function productDetailsTemplate(product) {
-  return `<section class="product-detail"> <h3>${product.Brand.Name}</h3>
+  const imageUrl = product.Images?.PrimaryLarge || product.Image || "";
+  const brandName = product.Brand?.Name || "";
+  const colorName = product.Colors?.[0]?.ColorName || "";
+
+  return `<section class="product-detail">
+    <h3>${brandName}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
     <img
       class="divider"
-      src="${product.Image}"
+      src="${imageUrl}"
       alt="${product.NameWithoutBrand}"
     />
     <p class="product-card__price">$${product.FinalPrice}</p>
-    <p class="product__color">${product.Colors[0].ColorName}</p>
-    <p class="product__description">
-    ${product.DescriptionHtmlSimple}
-    </p>
+    <p class="product__color">${colorName}</p>
+    <p class="product__description">${product.DescriptionHtmlSimple}</p>
     <div class="product-detail__add">
       <button id="addToCart" data-id="${product.Id}">Add to Cart</button>
-    </div></section>`;
+    </div>
+  </section>`;
 }
