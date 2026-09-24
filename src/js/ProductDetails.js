@@ -47,11 +47,14 @@ function productDetailsTemplate(product) {
   return `<section class="product-detail">
     <h3>${brandName}</h3>
     <h2 class="divider">${product.NameWithoutBrand}</h2>
-    <img
-      class="divider"
-      src="${imageUrl}"
-      alt="${product.NameWithoutBrand}"
-    />
+    <picture>
+      ${product.Images?.PrimaryExtraLarge ? `<source media="(min-width: 500px)" srcset="${appUrl(product.Images.PrimaryExtraLarge)}">` : ""}
+      <img
+        class="divider"
+        src="${imageUrl}"
+        alt="${product.NameWithoutBrand}"
+      />
+    </picture>
     <p class="product-card__price">$${product.FinalPrice}</p>
     <p class="product__color">${colorName}</p>
     <p class="product__description">${product.DescriptionHtmlSimple}</p>

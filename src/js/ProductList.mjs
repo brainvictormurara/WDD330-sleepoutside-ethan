@@ -11,7 +11,10 @@ function productCardTemplate(product, category) {
   return `
     <li class="product-card">
       <a href="${href}">
-        <img src="${imageUrl}" alt="${product.NameWithoutBrand}">
+        <picture>
+          ${product.Images?.PrimaryLarge ? `<source media="(min-width: 500px)" srcset="${appUrl(product.Images.PrimaryLarge)}">` : ""}
+          <img src="${imageUrl}" alt="${product.NameWithoutBrand}">
+        </picture>
         <h3 class="card__brand">${brandName}</h3>
         <h2 class="card__name">${product.NameWithoutBrand}</h2>
         <p class="product-card__price">$${product.FinalPrice}</p>
