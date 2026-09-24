@@ -1,3 +1,9 @@
+// Local resources belong to the app root, even on nested pages.
+export function appUrl(path) {
+  if (!path || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(path)) return path;
+  return `${import.meta.env.BASE_URL}${path.replace(/^(?:\.\/|\/)+/, "")}`;
+}
+
 // wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
   return parent.querySelector(selector);
@@ -25,10 +31,10 @@ export function setClick(selector, callback) {
 
 export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = false) {
     if (clear) {
-        parentElement.innerHTML = '';
+        parentElement.innerHTML = "";
     }
     const html = list.map(templateFn);
-    parentElement.insertAdjacentHTML(position, html.join(''));
+    parentElement.insertAdjacentHTML(position, html.join(""));
 }
 
 export function renderWithTemplate(template, parentElement, data, callback) {
@@ -48,7 +54,7 @@ export function initHeaderSearch() {
   const form = document.querySelector(".search-form");
   if (!form) return;
 
-  const input = form.querySelector('input[name="search"]');
+  const input = form.querySelector("input[name=\"search\"]");
   const currentSearch = new URLSearchParams(window.location.search).get("search");
   if (input && currentSearch) {
     input.value = currentSearch;

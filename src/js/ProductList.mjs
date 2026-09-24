@@ -1,22 +1,12 @@
-import { renderListWithTemplate } from "./utils.mjs";
+import { appUrl, renderListWithTemplate } from "./utils.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
 
 loadHeaderFooter();
 
-const pagePaths = {
-  "880RR": "product_pages/marmot-ajax-3.html",
-  "985RF": "product_pages/northface-talus-4.html",
-  "985PR": "product_pages/northface-alpine-3.html",
-  "344YJ": "product_pages/cedar-ridge-rimrock-2.html",
-};
-
 function productCardTemplate(product, category) {
-  const imageUrl = product.Images?.PrimaryMedium || product.Image || "";
+  const imageUrl = appUrl(product.Images?.PrimaryMedium || product.Image || "");
   const brandName = product.Brand?.Name || "";
-  const productPage = pagePaths[product.Id];
-  const href = productPage
-    ? `${productPage}?product=${product.Id}&category=${category}`
-    : "#";
+  const href = `${appUrl("product_pages/index.html")}?product=${encodeURIComponent(product.Id)}&category=${encodeURIComponent(category)}`;
 
   return `
     <li class="product-card">
@@ -59,13 +49,16 @@ export default class ProductList {
 
   renderList(list) {
     const products = Array.isArray(list) ? list : [];
-    const visibleProducts = this.searchQuery
-      ? products
-      : products.filter((product) => pagePaths[product.Id]);
+    if (!products.length) {
+      this.listElement.innerHTML = "<li>No products available.</li>";
+      return;
+    }
     renderListWithTemplate(
       (product) => productCardTemplate(product, this.category || "tents"),
       this.listElement,
-      visibleProducts,
+      products,
+      "afterbegin",
+      true,
     );
   }
 }

@@ -1,18 +1,21 @@
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { appUrl, getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
     this.productId = productId;
-    this.product = {};
+    this.product = null;
     this.dataSource = dataSource;
   }
 
   async init() {
-    this.product = await this.dataSource.findProductById(this.productId);
+    this.product = this.productId
+      ? await this.dataSource.findProductById(this.productId)
+      : null;
     this.renderProductDetails();
   }
 
   addProductToCart() {
+    if (!this.product) return;
     const cartItems = getLocalStorage("so-cart") || [];
     cartItems.push(this.product);
     setLocalStorage("so-cart", cartItems);
@@ -21,6 +24,11 @@ export default class ProductDetails {
   renderProductDetails() {
     const productElement = document.querySelector(".product-detail");
     if (!productElement) return;
+
+    if (!this.product) {
+      productElement.innerHTML = "<p>Product not found. Please select a product from a category.</p>";
+      return;
+    }
 
     productElement.innerHTML = productDetailsTemplate(this.product);
 
@@ -32,7 +40,7 @@ export default class ProductDetails {
 }
 
 function productDetailsTemplate(product) {
-  const imageUrl = product.Images?.PrimaryLarge || product.Image || "";
+  const imageUrl = appUrl(product.Images?.PrimaryLarge || product.Image || "");
   const brandName = product.Brand?.Name || "";
   const colorName = product.Colors?.[0]?.ColorName || "";
 
